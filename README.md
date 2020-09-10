@@ -36,7 +36,7 @@ Player 2: Choose an outcome from the list below
 5.  Defunct coin
 6.  None
 > 6  
-.
-.
-.
+.  
+.  
+.  
 Player 1 won the game. Final Score: 15-11
