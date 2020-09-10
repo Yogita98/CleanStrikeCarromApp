@@ -1,6 +1,5 @@
 # CleanStrikeCarromApp
-A new game in carrom-board called Clean Strike is played by 2 players with multiple turns. A
-turn has a player attempting to strike a coin with the striker. Players alternate in taking turns.
+### A new game in carrom-board called Clean Strike is played by 2 players with multiple turns. A turn has a player attempting to strike a coin with the striker. Players alternate in taking turns.
 
 The game is described as follows:
 - There are 9 black coins, a red coin and a striker on the carrom-board
@@ -36,7 +35,7 @@ Player 2: Choose an outcome from the list below
 4.  Striker strike
 5.  Defunct coin
 6.  None
-> 6
+> 6  
 .
 .
 .
