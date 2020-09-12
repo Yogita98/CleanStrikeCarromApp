@@ -102,15 +102,11 @@ class Players:
         
     def checkscore(self):
         if(self.player_dict[1]['score']>=5) and self.player_dict[1]['score']-self.player_dict[2]['score'] >= 3:
-            return True
+            return 1
         elif (self.player_dict[2]['score']>=5) and self.player_dict[2]['score']-self.player_dict[1]['score'] >= 3:
-            return True
+            return 2
         else:
-            return False
-            
-    def deductpoint(self,player,points):
-        """ 1. When a player does not pocket a coin for 3 successive turns he/she loses a point 
-            2. When a player fouls 3 times (a foul is a turn where a player loses, at least, 1 point), he/she loses an additional point """
+            return 0
 
     def nocoinspocketed(self,player):
         if(self.player_dict[player]['nocoinpocketed']==2):
@@ -127,24 +123,15 @@ class Players:
         else:
             self.player_dict[player]['foulcount']+=1
 
-        
-    def showleaderboard(self):
-        """ """
-        print("Leaderboard")
-        print(self.player_dict)
-        """
-        The following checks the score of a player and returns the result.
-        :return: object containing result, player1score, player2score
-        """
-        if self.player_dict[1]['score'] > self.player_dict[2]['score']:
-            if self.player_dict[1]['score'] - self.player_dict[2]['score'] >= 3:
-                return {"result": "Player1",
+
+    def show_results_on_coins_exhausted(self):
+        if self.player_dict[1]['score'] > self.player_dict[2]['score'] or self.player_dict[1]['score'] - self.player_dict[2]['score'] >= 3:
+                return {"result": "Player1 won",
                         "Player1 Score": self.player_dict[1]['score'],
                         "Player2 Score": self.player_dict[2]['score']}
 
-        else:
-            if self.player_dict[2]['score'] - self.player_dict[1]['score'] >= 3:
-                return {"result": "Player2",
+        elif self.player_dict[2]['score'] > self.player_dict[1]['score'] or self.player_dict[2]['score'] - self.player_dict[1]['score'] >= 3:
+                return {"result": "Player2 won",
                         "Player1 Score": self.player_dict[1]['score'],
                         "Player2 Score": self.player_dict[2]['score']}
             
@@ -153,78 +140,85 @@ class Players:
                 "Player1 Score": self.player_dict[1]['score'],
                 "Player2 Score": self.player_dict[2]['score']}
 
-    def computewinner(self):
+
+    def showWinner(self):
+        """ """
+        
+        """
+        The following checks the score of a player and returns the result.
+        :return: object containing result, player1score, player2score
+        """
+        if self.player_dict[1]['score'] > self.player_dict[2]['score']:
+            return {"result": "Player1 won",
+                "Player1 Score": self.player_dict[1]['score'],
+                "Player2 Score": self.player_dict[2]['score']}
+        else:
+            return {"result": "Player2 won",
+                "Player1 Score": self.player_dict[1]['score'],
+                "Player2 Score": self.player_dict[2]['score']}
+        
+
+    def showleaderboard(self):
         """ 1. A game is won by the first player to have won at least 5 points, in total, and, at least,
                 3 points more than the opponent. 
             2. When the coins are exhausted on the board, if the highest scorer is not leading by, atleast, 
                 3 points or does not have a minimum of 5 points, the game is considered a draw """
+        print("Leaderboard")
+        print(self.player_dict)
 
 
-
-print("Welcome to Clean Strike Carrom Game!")
-
-gameplayers = Players()
-game=CleanStrike()
-player=0
-
-while(True):
-
+def main():
     
-    player = (player) % 2
-    player = player+1
+    print("Welcome to Clean Strike Carrom Game!")
 
-    print("Player ",player)
-    print("Choose an outcome from the list below:")
-    print("1.Strike\n 2.Multistrike\n 3.Red strike\n 4.Striker strike\n 5.Defunct coin\n 6.None")
-    choice = int(input())
+    gameplayers = Players()
+    game=CleanStrike()
+    player=0
 
-    if choice == 1:
-        points = game.strike()
-        gameplayers.changescore(player,points)
+    while(True):
 
-    elif choice == 2:
-        points = game.multistrike()
-        gameplayers.changescore(player,points)
-    
-    elif choice == 3:
-        points = game.redstrike()
-        gameplayers.changescore(player,points)
+        player = (player) % 2
+        player = player+1
 
-    elif choice == 4:
-        points = game.striker()
-        gameplayers.changescore(player,points)
-        gameplayers.changefoulcount(player)
-        gameplayers.nocoinspocketed(player)
-        #foulcount ++
-        #nocoinspocket ++
+        print("Player ",player)
+        print("Choose an outcome from the list below:")
+        print("1.Strike\n 2.Multistrike\n 3.Red strike\n 4.Striker strike\n 5.Defunct coin\n 6.None")
+        choice = int(input())
 
-    elif choice == 5:
-        points = game.defunctcoin()
-        gameplayers.changescore(player,points)
-        gameplayers.changefoulcount(player)
-        gameplayers.nocoinspocketed(player)
-        #foulcount - 1
-        #nocoinspocket ++
+        if choice == 1:
+            points = game.strike()
+            gameplayers.changescore(player,points)
 
-    elif choice == 6:
-        gameplayers.nocoinspocketed(player)
-        #nocoinspocket ++
+        elif choice == 2:
+            points = game.multistrike()
+            gameplayers.changescore(player,points)
+        
+        elif choice == 3:
+            points = game.redstrike()
+            gameplayers.changescore(player,points)
 
-    gameplayers.showleaderboard()
-    if game.coinchecker() or gameplayers.checkscore():
-        print(gameplayers.showleaderboard())
-        break
+        elif choice == 4:
+            points = game.striker()
+            gameplayers.changescore(player,points)
+            gameplayers.changefoulcount(player)
+            gameplayers.nocoinspocketed(player)
 
+        elif choice == 5:
+            points = game.defunctcoin()
+            gameplayers.changescore(player,points)
+            gameplayers.changefoulcount(player)
+            gameplayers.nocoinspocketed(player)
 
+        elif choice == 6:
+            gameplayers.nocoinspocketed(player)
 
+        gameplayers.showleaderboard()
+        if gameplayers.checkscore()==1 or gameplayers.checkscore()==2:
+            print(gameplayers.showWinner())
+            break
+        elif game.coinchecker(): 
+            print(gameplayers.show_results_on_coins_exhausted())
+            break
 
-
-
-
-# gameplayers.callswitchstatement(choice,player=1)
-
-# print("Player2\n")
-# print("Choose an outcome from the list below:\n")
-# print("1.Strike\n2.Multistrike\n3.Red strike\n4.Striker strike\n5.Defunct coin\n6.None\n")
-# choice = int(input())
-# gameplayers.callswitchstatement(choice,player=2)
+if __name__ == "__main__":
+    main()
